@@ -26,15 +26,9 @@ div#myTable {
     /*border: 1px solid grey;*/
     width: 800px; height: 600px;
 }
-/*
-table#tableHeader{
-    width: 800px; height: 20px;
-}
-div#myTable {
-    height: 400px;
-}*/
+
 
 div#myTableHeader{
     border: 1px solid 101010;width: 800px;
 }
-th {height: 20px; width: 84px;}/* padding-right: 30px; padding-left: 20px;}*/
+th {height: 20px; width: 84px;}
