@@ -1,73 +1,40 @@
-img#tableEditor{
-    width:300px; height:200px; border: 1px;
-}
-/*iframe{
-    width:700px; height:320px;
-}*/
-img#tableEditor:hover{
-    width:320px; height:220px; border: 1px;
-}
-input {
-    border: none;
-    width: 80px;
-    font-size: 14px;
-    padding: 2px;
+table {table-layout: fixed}
+table {border-collapse: collapse; width: 100%;}
+td, th {
+    height: 18px; width: 84px; color: grey; text-align: center;
+    background-color: lightyellow; border: 1px solid #999;
 }
 
-input:hover {
-    background-color: #eee;
-}
-input:focus {
-    background-color: lightgrey;
-    text-align: left;
-}
-input:not(focus) {
-    text-align: right;
-}
-input.activeData {
-   background-color: lightgreen;
-}
-table {
-    border-collapse: collapse;
-}
+input {border: none;    width: 80px;    font-size: 14px;    padding: 2px;}
+input:hover {background-color: #eee;}
+input:focus {background-color: lightgrey;text-align: left;}
+input:not(focus) {text-align: right;}
+input.activeData {background-color: lightgreen;}
 
+
+
+/*#mainTable tr:hover{background-color:#555; border: 1px solid red;}
 table, td, th {
     border: 1px solid #999;
-}
-th {
-    height: 18px; width: 50px; color: grey; text-align: center;
-    background-color: lightyellow;
-
-}
-#firstTd {height: 18px; width: 50px; color: grey; text-align: center;
-    background-color: lightyellow;}
-
-
-td {
-        padding: 0;
-}
-li {list-style-type: none; display: inline;
-}
-li {
-    background-color: lightgrey;
-    color: white;
-    padding: 10px 0 10px 0;
-    border-radius: 0 0 4px 4px;
-}
-li:hover {
-    background-color: #4f4f4f;
-}
-
-a {
-    font-family: arial;
-    color: grey;
-    padding: 10px 20px;
-    text-decoration: none;
-}
-/*a:focus {
-    color: #red;
 }*/
-li a#actives {background-color: grey;
-    border-radius: 0 0 4px 4px;
-    color: white;
+
+
+
+div#myTable {
+    /*overflow: scroll;*/
+    overflow-y:auto;
+    /*border: 1px solid grey;*/
+    width: 800px; height: 600px;
 }
+/*
+table#tableHeader{
+    width: 800px; height: 20px;
+}
+div#myTable {
+    height: 400px;
+}*/
+
+div#myTableHeader{
+    border: 1px solid 101010;width: 800px;
+}
+th {height: 20px; width: 84px;}/* padding-right: 30px; padding-left: 20px;}*/
