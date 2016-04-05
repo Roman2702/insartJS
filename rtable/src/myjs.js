@@ -4,10 +4,10 @@ function createTable(){
 var myElement = document.getElementById("tableHeader");
 var myTd, myTh, node, nameCol, myTr;
 myTr = document.createElement("tr");
-for (var i=0; i <= numCol; i++) {
+nameCol = "Sheet";
+for (var i=1; i <= numCol; i++) {
     myTh = document.createElement("th");
-    if (i===0){nameCol = "Sheet";}
-    else if (i<27) {nameCol = getChar(i-1);}
+    if (i<27) {nameCol = getChar(i-1);}
     else if (i<53) {nameCol = 'A' + getChar(i-27);}
  
 node = document.createTextNode(nameCol);
@@ -27,10 +27,11 @@ for (var i = 0; i < numStr; i++) {
     myTr.appendChild(myTd);
     for (var j = 0; j < numCol; j++) {
         myTd = document.createElement("td");
-        myInput = document.createElement("input");
-        myInput.setAttribute("id",getChar(j)+(i+1));//set id for input
+        //myInput = document.createElement("input");
+        myTd.setAttribute("id",getChar(j)+(i+1));//set id for td
+        myTd.setAttribute("class","notIndex");
         //console.log(myInput.id);
-        myTd.appendChild(myInput);
+        //myTd.appendChild(myInput);
         myTr.appendChild(myTd);
     }
 }

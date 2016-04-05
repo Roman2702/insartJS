@@ -4,9 +4,9 @@ td, th {
     height: 18px; width: 84px; color: grey; text-align: center;
     background-color: lightyellow; border: 1px solid #999;
 }
-
+td.notIndex{background-color: lightgrey; }
 input {border: none;    width: 80px;    font-size: 14px;    padding: 2px;}
-input:hover {background-color: #eee;}
+td.notIndex:hover {background-color: #eee;}
 input:focus {background-color: lightgrey;text-align: left;}
 input:not(focus) {text-align: right;}
 input.activeData {background-color: lightgreen;}
