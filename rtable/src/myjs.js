@@ -1,31 +1,43 @@
-
-for (var i=0; i<6; i++) {
-    var row = document.querySelector("table").insertRow(-1);
-    for (var j=0; j<6; j++) {
-        var letter = String.fromCharCode("A".charCodeAt(0)+j-1);
-        row.insertCell(-1).innerHTML = i&&j ? "<input id='"+ letter+i +"'/>" : i||letter;
+var numStr = 30, numCol = 25; 
+function createTable(){
+//create a header
+var myElement = document.getElementById("tableHeader");
+var myTd, myTh, node, nameCol, myTr;
+myTr = document.createElement("tr");
+for (var i=0; i <= numCol; i++) {
+    myTh = document.createElement("th");
+    if (i===0){nameCol = "Sheet";}
+    else if (i<27) {nameCol = getChar(i-1);}
+    else if (i<53) {nameCol = 'A' + getChar(i-27);}
+ 
+node = document.createTextNode(nameCol);
+myTh.appendChild(node);
+myTr.appendChild(myTh);
     }
-window.alert(i);
-}
+myElement.appendChild(myTr);
 
-var DATA={}, INPUTS=[].slice.call(document.querySelectorAll("input"));
-INPUTS.forEach(function(elm) {
-    elm.onfocus = function(e) {
-        e.target.value = localStorage[e.target.id] || "";
-    };
-    elm.onblur = function(e) {
-        localStorage[e.target.id] = e.target.value;
-        computeAll();
-    };
-    var getter = function() {
-        var value = localStorage[elm.id] || "";
-        if (value.charAt(0) == "=") {
-            with (DATA) return eval(value.substring(1));
-        } else { return isNaN(parseFloat(value)) ? value : parseFloat(value); }
-    };
-    Object.defineProperty(DATA, elm.id, {get:getter});
-    Object.defineProperty(DATA, elm.id.toLowerCase(), {get:getter});
-});
-(window.computeAll = function() {
-    INPUTS.forEach(function(elm) { try { elm.value = DATA[elm.id]; } catch(e) {} });
-})();
+//create e table
+myElement = document.getElementById("mainTable");
+for (var i = 0; i < numStr; i++) {
+    myTr = document.createElement("tr");
+    myElement.appendChild(myTr);
+    myTd = document.createElement("td");
+    node = document.createTextNode(i+1);
+    myTd.appendChild(node);
+    myTr.appendChild(myTd);
+    for (var j = 0; j < numCol; j++) {
+        myTd = document.createElement("td");
+        myInput = document.createElement("input");
+        myInput.setAttribute("id",getChar(j)+(i+1));//set id for input
+        //console.log(myInput.id);
+        myTd.appendChild(myInput);
+        myTr.appendChild(myTd);
+    }
+}
+}
+//list of char A - Z
+    function getChar(i){       
+        var startChar = "A";
+            endChar = "Z";
+            chCount = endChar.charCodeAt(0) - startChar.charCodeAt(0) + 1;
+        return String.fromCharCode(startChar.charCodeAt(0) + i) }
