@@ -1,10 +1,11 @@
-var numStr = 30, numCol = 25, numSheets = 3; 
+//global variables
+var numStr = 30, numCol = 80, numSheets = 3, maxNumCol = 27*26; 
 var myTd, myTh, node, nameCol, myTr;
 
 function createTable(numSheet){
-//create a header
+
 var myElement = document.getElementById("myTable");
-//create a table
+//create a table in div id = myTable
 var myTb = document.createElement("table");
 myTb.setAttribute("id",("sheet"+numSheet));
 //hide all sheets except 1st
@@ -23,7 +24,7 @@ myTr.appendChild(myTh);
 for (var i=1; i < numCol; i++) {
     myTh = document.createElement("th");
     if (i<27) {nameCol = getChar(i-1);}
-    else if (i<53) {nameCol = 'A' + getChar(i-27);}
+    else {nameCol = getChar(Math.floor(i/26)-1)+getChar(i%26);}
  
 node = document.createTextNode(nameCol);
 myTh.appendChild(node);
