@@ -32,3 +32,5 @@ div#myTableHeader{
     border: 1px solid 101010;width: 800px;
 }
 th {height: 20px; width: 84px;}
+
+*.hidden {display: none;}

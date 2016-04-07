@@ -4,19 +4,18 @@
 <link rel="stylesheet" type="text/css" href="css\mystyle.css">
 <source src="src\myjs.js">
 </head>
-<body>
+<body onload="createSheets(3)">
 <script type="text/javascript" src="src\myjs.js">
 </script>
+<div id="sheetSwitch">
+<button onclick="addSheet()">add shit</button>
+<button onclick="setVisible(1)">sheet1</button>
+<button onclick="setVisible(2)">sheet2</button>
+<button onclick="setVisible(3)">sheet3</button>
+</div>
 
-<button onclick="createTable()">Create a table?</button>
-<div id="myTableHeader" class="table">
-    <table id="tableHeader">
-    </table>
-<!--</div>
+<div id="myTable">
 
-<div id="myTable" class="table">-->
-    <table id="mainTable">
-    </table>
 </div>
 
 
