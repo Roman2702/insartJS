@@ -34,7 +34,7 @@ myTb.appendChild(myTr);
 myElement.appendChild(myTb);
 
 
-
+// create rows of td
 for (var i = 0; i < numStr; i++) {
     myTr = document.createElement("tr");
     myElement.appendChild(myTr);
@@ -47,6 +47,11 @@ for (var i = 0; i < numStr; i++) {
         //myInput = document.createElement("input");
         myTd.setAttribute("id",getChar(j)+(i+1));//set id for td
         myTd.setAttribute("class","notIndex");
+//add input in <td> if onclick  
+        myTd.addEventListener("click", 
+            function(){this.innerHTML = "<input/>";
+            //this.focus();
+        });
         //console.log(myInput.id);
         //myTd.appendChild(myInput);
         myTr.appendChild(myTd);
