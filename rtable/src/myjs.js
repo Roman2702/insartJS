@@ -48,13 +48,23 @@ for (var i = 0; i < numRow; i++) {
         //add input in <td> if onclick  
         myTd.addEventListener("click", 
             function(e){
+                if (e.target.innerHTML){
+                    var oldValue = e.target.innerHTML;
+                    e.target.innerHTML="";
+                } else {var oldValue ="";}
                 myInput = document.createElement("input");
+                myInput.value = oldValue;
                 myInput.addEventListener("blur", 
                     function(){
                         //write ti localStorage as "id of td" = "value of input"
-                        localStorage.setItem(myInput.parentNode.getAttribute("id"), myInput.value);
+                        var keyValue = e.target.getAttribute("id");
+                        //myInput.parentNode.getAttribute("id"); 
+                        localStorage.setItem(keyValue, myInput.value);
                         //kill <input/> 
                         myInput.remove();
+                        e.target.innerHTML = 
+                        //document.getElementById(keyValue).innerHTML = 
+                        localStorage.getItem(keyValue);
                     });
                 e.target.appendChild(myInput);
                 //var cellID = this.getAttribute("id");
