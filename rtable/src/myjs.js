@@ -8,7 +8,8 @@ var myInput;
 var myElement = document.getElementById("myTable");
 //create a table in div id = myTable
 var myTb = document.createElement("table");
-myTb.setAttribute("id",("sheet"+numSheet));
+var nameSheet = "sheet"+numSheet;
+myTb.setAttribute("id", nameSheet);
 //hide all sheets except 1st
 if (numSheet === 1) {myTb.setAttribute("class","visible");
 } else {myTb.setAttribute("class","hidden");}
@@ -43,10 +44,12 @@ for (var i = 0; i < numRow; i++) {
     myTr.appendChild(myTd);
     for (var j = 1; j <= numCol; j++) {
         myTd = document.createElement("td");
-        myTd.setAttribute("id",setNameCol(j-1)+(i+1));//set id for td
+        myTd.setAttribute("id",
+            ('$' + nameSheet + '$' + setNameCol(j-1) +
+            '$' + (i+1)));//set id for td
         myTd.setAttribute("class","notIndex");
         //add input in <td> if onclick  
-        myTd.addEventListener("click", 
+        myTd.addEventListener("dblclick", 
             function(e){
                 if (e.target.innerHTML){
                     var oldValue = e.target.innerHTML;
@@ -59,7 +62,9 @@ for (var i = 0; i < numRow; i++) {
                         //write ti localStorage as "id of td" = "value of input"
                         var keyValue = e.target.getAttribute("id");
                         //myInput.parentNode.getAttribute("id"); 
+                        if (myInput.value) {
                         localStorage.setItem(keyValue, myInput.value);
+                    }
                         //kill <input/> 
                         myInput.remove();
                         e.target.innerHTML = 
