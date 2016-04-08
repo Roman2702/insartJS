@@ -1,5 +1,5 @@
 //global variables
-var numStr = 100, numCol = 100, numSheets = 3, maxNumCol = 26*26*26; 
+var numRow = 100, numCol = 100, numSheets = 3, maxNumCol = 26*26*26; 
 var rowNum, cellNum;//coordinates of cell (still dosn't work)
 var myTd, myTh, node, nameCol, myTr;
 
@@ -34,7 +34,7 @@ myElement.appendChild(myTb);
 
 
 // create rows of td
-for (var i = 0; i < numStr; i++) {
+for (var i = 0; i < numRow; i++) {
     myTr = document.createElement("tr");
     myElement.appendChild(myTr);
     myTd = document.createElement("td");
@@ -43,15 +43,21 @@ for (var i = 0; i < numStr; i++) {
     myTr.appendChild(myTd);
     for (var j = 1; j <= numCol; j++) {
         myTd = document.createElement("td");
-        //myInput = document.createElement("input");
         myTd.setAttribute("id",setNameCol(j-1)+(i+1));//set id for td
         myTd.setAttribute("class","notIndex");
         //add input in <td> if onclick  
         myTd.addEventListener("click", 
             function(e){
                 myInput = document.createElement("input");
+                myInput.addEventListener("blur", 
+                    function(){
+                        //write ti localStorage as "id of td" = "value of input"
+                        localStorage.setItem(myInput.parentNode.getAttribute("id"), myInput.value);
+                        //kill <input/> 
+                        myInput.remove();
+                    });
                 e.target.appendChild(myInput);
-                var cellID = this.getAttribute("id");
+                //var cellID = this.getAttribute("id");
                 //var myF = function(i,j){rowNum = i; cellNum = j;
                 //console.log("rowNum = " + rowNum + "  cellNum = "+ cellNum);};
                 
@@ -114,5 +120,18 @@ myBut.setAttribute("onclick", "setVisible(numSheets)");
 node = document.createTextNode("sheet" + numSheets);
 myBut.appendChild(node);
 myElement.appendChild(myBut);
-
+}
+function addRow(){
+    // Find a <table> element with class="visible":
+    var table = document.getElementsByClassName("visible")[0];
+    // Create an empty <tr> element and add it to the last position of <table>:
+    var row = table.insertRow(++numRow);     
+    // Insert a new cells (<td>) :
+    var cell = row.insertCell(0);
+    node = document.createTextNode(numRow);
+    cell.appendChild(node);
+    for (var i = 1; i < numCol; i++) {
+        var cell = row.insertCell(i);
+    }
+console.log("row added? " + numRow);
 }
