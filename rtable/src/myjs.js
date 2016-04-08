@@ -125,13 +125,13 @@ function addRow(){
     // Find a <table> element with class="visible":
     var table = document.getElementsByClassName("visible")[0];
     // Create an empty <tr> element and add it to the last position of <table>:
-    var row = table.insertRow(++numRow);     
+    var lastRowNumber = table.rows.length;
+    var row = table.insertRow(lastRowNumber);     
     // Insert a new cells (<td>) :
     var cell = row.insertCell(0);
-    node = document.createTextNode(numRow);
+    node = document.createTextNode(lastRowNumber);
     cell.appendChild(node);
-    for (var i = 1; i < numCol; i++) {
+    for (var i = 1; i <= numCol; i++) {
         var cell = row.insertCell(i);
     }
-console.log("row added? " + numRow);
 }
