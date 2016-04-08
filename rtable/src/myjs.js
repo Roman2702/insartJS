@@ -1,9 +1,10 @@
 //global variables
 var numStr = 30, numCol = 80, numSheets = 3, maxNumCol = 27*26; 
+var rowNum, cellNum;//coordinates of cell
 var myTd, myTh, node, nameCol, myTr;
 
 function createTable(numSheet){
-
+var myInput;
 var myElement = document.getElementById("myTable");
 //create a table in div id = myTable
 var myTb = document.createElement("table");
@@ -21,14 +22,12 @@ myTh.appendChild(node);
 myTr.appendChild(myTh);
 
 //create raw of th 
-for (var i=1; i < numCol; i++) {
+for (var i=0; i < numCol; i++) {
     myTh = document.createElement("th");
-    if (i<27) {nameCol = getChar(i-1);}
-    else {nameCol = getChar(Math.floor(i/26)-1)+getChar(i%26);}
- 
-node = document.createTextNode(nameCol);
-myTh.appendChild(node);
-myTr.appendChild(myTh);
+    nameCol = setNameCol(i);
+    node = document.createTextNode(nameCol);
+    myTh.appendChild(node);
+    myTr.appendChild(myTh);
     }
 myTb.appendChild(myTr);
 myElement.appendChild(myTb);
@@ -42,18 +41,24 @@ for (var i = 0; i < numStr; i++) {
     node = document.createTextNode(i+1);
     myTd.appendChild(node);
     myTr.appendChild(myTd);
-    for (var j = 1; j < numCol; j++) {
+    for (var j = 1; j <= numCol; j++) {
         myTd = document.createElement("td");
         //myInput = document.createElement("input");
-        myTd.setAttribute("id",getChar(j)+(i+1));//set id for td
+        myTd.setAttribute("id",setNameCol(j-1)+(i+1));//set id for td
         myTd.setAttribute("class","notIndex");
-//add input in <td> if onclick  
+        //add input in <td> if onclick  
         myTd.addEventListener("click", 
-            function(){this.innerHTML = "<input/>";
-            //this.focus();
-        });
-        //console.log(myInput.id);
-        //myTd.appendChild(myInput);
+            function(e){
+                myInput = document.createElement("input");
+                e.target.appendChild(myInput);
+                var cellID = this.getAttribute("id");
+                //var myF = function(i,j){rowNum = i; cellNum = j;
+                //console.log("rowNum = " + rowNum + "  cellNum = "+ cellNum);};
+                
+                e.target.childNodes[0].focus();
+                
+            });
+        //end adding
         myTr.appendChild(myTd);
     }
     myTb.appendChild(myTr);
@@ -67,7 +72,18 @@ function getChar(i){
         chCount = endChar.charCodeAt(0) - startChar.charCodeAt(0) + 1;
     return String.fromCharCode(startChar.charCodeAt(0) + i) 
 }
+function setNameCol(i){
+    if (i<26) {return getChar(i);}
+    else {return getChar(Math.floor(i/26)-1)+getChar(i%26);}
+}
 
+function setData(){
+this.getAttribute("id");
+// Сохранение значения
+//localStorage.setItem("", "Значение")
+// Получение значения
+//localStorage.getItem("Ключ")
+}
 
 //create sheets
 function createSheets(numSheets){
