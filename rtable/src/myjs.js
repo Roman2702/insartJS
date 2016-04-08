@@ -1,6 +1,6 @@
 //global variables
-var numStr = 30, numCol = 80, numSheets = 3, maxNumCol = 27*26; 
-var rowNum, cellNum;//coordinates of cell
+var numStr = 100, numCol = 100, numSheets = 3, maxNumCol = 26*26*26; 
+var rowNum, cellNum;//coordinates of cell (still dosn't work)
 var myTd, myTh, node, nameCol, myTr;
 
 function createTable(numSheet){
@@ -74,7 +74,12 @@ function getChar(i){
 }
 function setNameCol(i){
     if (i<26) {return getChar(i);}
-    else {return getChar(Math.floor(i/26)-1)+getChar(i%26);}
+    else if (i<676){return getChar(Math.floor(i/26)-1)+getChar(i%26);}
+    else {var x1 = Math.floor(i/676);
+          var x2 = Math.floor((i%676)/26);
+          var x3 = i - x1*676 - x2*26;
+        return getChar(x1-1)+
+        getChar(x2)+getChar(x3);}
 }
 
 function setData(){
