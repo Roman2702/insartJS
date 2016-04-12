@@ -1,8 +1,9 @@
 //global variables
-var numRow = 100, numCol = 100, numSheets = 3, maxNumCol = 26*26*26; 
+var numRow = 30, numCol = 30, numSheets = 3, maxNumCol = 26*26*26; 
 var rowNum, cellNum;//coordinates of cell (still dosn't work)
 var myTd, myTh, node, nameCol, myTr;
 var numLetter = 26, numLetterSqr = numLetter * numLetter;//quantity of letters ('A'.. 'Z')
+
 function createTable(numSheet){
     var myInput;
     var myElement = document.getElementById("myTable");
@@ -49,36 +50,7 @@ for (var i = 0; i < numRow; i++) {
             '$' + (i+1)));//set id for td
         myTd.setAttribute("class","notIndex");
         //add input in <td> if onclick  
-        myTd.addEventListener("dblclick", 
-            function(e){
-                if (e.target.innerHTML){
-                    var oldValue = e.target.innerHTML;
-                    e.target.innerHTML="";
-                } else {var oldValue ="";}
-                myInput = document.createElement("input");
-                myInput.value = oldValue;
-                myInput.addEventListener("blur", 
-                    function(){
-                        //write ti localStorage as "id of td" = "value of input"
-                        var keyValue = e.target.getAttribute("id");
-                        //myInput.parentNode.getAttribute("id"); 
-                        if (myInput.value) {
-                            localStorage.setItem(keyValue, myInput.value);
-                        }
-                        //kill <input/> 
-                        myInput.remove();
-                        e.target.innerHTML = 
-                        //document.getElementById(keyValue).innerHTML = 
-                        localStorage.getItem(keyValue);
-                    });
-                e.target.appendChild(myInput);
-                //var cellID = this.getAttribute("id");
-                //var myF = function(i,j){rowNum = i; cellNum = j;
-                //console.log("rowNum = " + rowNum + "  cellNum = "+ cellNum);};
-                
-                e.target.childNodes[0].focus();
-                
-            });
+        myInputEvent(myTd);
         //end adding
         myTr.appendChild(myTd);
     }
@@ -140,6 +112,7 @@ function addSheet(){
 function addRow(){
     // Find a <table> element with class="visible":
     var table = document.getElementsByClassName("visible")[0];
+    var nameSheet = table.getAttribute('id');
     // Create an empty <tr> element and add it to the last position of <table>:
     var lastRowNumber = table.rows.length;
     var row = table.insertRow(lastRowNumber);     
@@ -147,10 +120,42 @@ function addRow(){
     var cell = row.insertCell(0);
     node = document.createTextNode(lastRowNumber);
     cell.appendChild(node);
-    for (var i = 1; i <= numCol; i++) {
+    var numCol = table.rows[0].cells.length;
+    for (var i = 1; i < numCol; i++) {
         var cell = row.insertCell(i);
+        cell.setAttribute("id",
+            ('$' + nameSheet + '$' + setNameCol(i-1) +
+            '$' + lastRowNumber));//set id for td
         cell.setAttribute("class","notIndex");
-        cell.addEventListener("dblclick", 
+        myInputEvent(cell);
+    }
+}
+function addCol(){
+    // Find a <table> element with class="visible":
+    var table = document.getElementsByClassName("visible")[0]; 
+    var lastColNumber = table.rows[0].cells.length;
+    var nameSheet = table.getAttribute('id');
+    var myTh = document.createElement("th");
+    var nameCol = setNameCol(lastColNumber-1);
+    var node = document.createTextNode(nameCol);
+    myTh.appendChild(node);
+    table.rows[0].appendChild(myTh);
+   
+    var numRow = table.rows.length;
+//    console.log(numRow);
+    for (var i = 1; i < numRow; i++) {
+        var cell = table.rows[i].insertCell(lastColNumber);
+        cell.setAttribute("id",
+            ('$' + nameSheet + '$' + setNameCol(lastColNumber-1) +
+            '$' + i));//set id for td
+        cell.setAttribute("class","notIndex");
+        myInputEvent(cell);
+    }
+}
+
+function myInputEvent(cell){
+    //add event on <input>
+    cell.addEventListener("dblclick", 
             function(e){
                 if (e.target.innerHTML){
                     var oldValue = e.target.innerHTML;
@@ -160,7 +165,7 @@ function addRow(){
                 myInput.value = oldValue;
                 myInput.addEventListener("blur", 
                     function(){
-                        //write ti localStorage as "id of td" = "value of input"
+                        //write to localStorage as "id of td" = "value of input"
                         var keyValue = e.target.getAttribute("id");
                         //myInput.parentNode.getAttribute("id"); 
                         if (myInput.value) {
@@ -169,16 +174,11 @@ function addRow(){
                         //kill <input/> 
                         myInput.remove();
                         e.target.innerHTML = 
-                        //document.getElementById(keyValue).innerHTML = 
                         localStorage.getItem(keyValue);
                     });
                 e.target.appendChild(myInput);
-                //var cellID = this.getAttribute("id");
-                //var myF = function(i,j){rowNum = i; cellNum = j;
-                //console.log("rowNum = " + rowNum + "  cellNum = "+ cellNum);};
-                
+                //delegate focus in new <input>
                 e.target.childNodes[0].focus();
                 
             });
-    }
 }

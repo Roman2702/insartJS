@@ -1,37 +1,47 @@
 table {table-layout: fixed}
 table {border-collapse: collapse; width: 100%;}
 td, th {
-    height: 18px; width: 84px; color: grey; text-align: center;
-    background-color: #e0ebeb; border: 1px solid #999;
+	height: 18px; width: 84px; color: grey; text-align: center;
+	background-color: #e0ebeb; border: 1px solid #999;
 }
 td.notIndex{background-color: #eff5f5; color: black; text-align: right;
-font-family: arial; font-size: 14px;}
-input {border: none;    width: 80px;    font-size: 14px;    padding: 2px;}
-td.notIndex:hover {background-color: #eee;}
-input:focus {background-color: lightgrey;text-align: left;}
-input:not(focus) {text-align: right;}
-input.activeData {background-color: lightgreen;}
+	font-family: arial; font-size: 14px;}
+	input {border: none;    width: 80px;    font-size: 14px;    padding: 2px;}
+	td.notIndex:hover {background-color: #eee;}
+	input:focus {background-color: lightgrey;text-align: left;}
+	input:not(focus) {text-align: right;}
+	input.activeData {background-color: lightgreen;}
 
 
 
 /*#mainTable tr:hover{background-color:#555; border: 1px solid red;}
 table, td, th {
     border: 1px solid #999;
-}*/
+    }*/
 
 
 
-div#myTable {
-    /*overflow: scroll;*/
-    overflow-y:auto;
-    /*border: 1px solid grey;*/
-    width: 800px; height: 600px;
-}
+    div#myTable {
+    	/*overflow: scroll;*/
+    	overflow-y:auto;
+    	/*border: 1px solid grey;*/
+    	width: 800px; height: 600px;
+    	border: 1px solid #999;
+    	float: left;
 
+    }
+    div#myAddCol {
+    	float: left;
+    	width: 20px; /*height: 100px;*/
+    }
 
-div#myTableHeader{
-    border: 1px solid 101010;width: 800px;
-}
-th {height: 20px; width: 84px;}
+    div#myAddRow {
+        clear: left;
+    }
 
-*.hidden {display: none;}
+    div#myTableHeader{
+    	border: 1px solid 101010;width: 800px;
+    }
+    th {height: 20px; width: 84px;}
+
+    *.hidden {display: none;}
