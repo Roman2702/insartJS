@@ -2,7 +2,8 @@
 var numRow = 30, numCol = 30, numSheets = 3, maxNumCol = 26*26*26; 
 var rowNum, cellNum;//coordinates of cell (still dosn't work)
 var myTd, myTh, node, nameCol, myTr;
-
+//clear localStorage
+localStorage.clear();
 function createTable(numSheet){
     var myInput;
     var myElement = document.getElementById("myTable");
@@ -45,8 +46,10 @@ for (var i = 0; i < numRow; i++) {
     for (var j = 1; j <= numCol; j++) {
         myTd = document.createElement("td");
         myTd.setAttribute("id",
+            (setNameCol(j-1) + (i+1)));//set id for td
+        /*myTd.setAttribute("id",
             ('$' + nameSheet + '$' + setNameCol(j-1) +
-            '$' + (i+1)));//set id for td
+            '$' + (i+1)));//set id for td*/
         myTd.setAttribute("class","notIndex");
         //add input in <td> if onclick  
         myInputEvent(myTd);
@@ -106,8 +109,10 @@ function addRow(){
     for (var i = 1; i < numCol; i++) {
         var cell = row.insertCell(i);
         cell.setAttribute("id",
+            (setNameCol(i-1) + lastRowNumber));//set id for td
+        /*cell.setAttribute("id",
             ('$' + nameSheet + '$' + setNameCol(i-1) +
-            '$' + lastRowNumber));//set id for td
+            '$' + lastRowNumber));//set id for td*/
         cell.setAttribute("class","notIndex");
         myInputEvent(cell);
     }
@@ -128,8 +133,11 @@ function addCol(){
     for (var i = 1; i < numRow; i++) {
         var cell = table.rows[i].insertCell(lastColNumber);
         cell.setAttribute("id",
+            (setNameCol(lastColNumber-1) + i));//set id for td
+
+        /*cell.setAttribute("id",
             ('$' + nameSheet + '$' + setNameCol(lastColNumber-1) +
-            '$' + i));//set id for td
+            '$' + i));//set id for td*/
         cell.setAttribute("class","notIndex");
         myInputEvent(cell);
     }
@@ -139,8 +147,9 @@ function myInputEvent(cell){
     //add event on <input>
     cell.addEventListener("dblclick", 
             function(e){
-                if (e.target.innerHTML){
-                    var oldValue = e.target.innerHTML;
+                var keyValue = e.target.getAttribute("id");
+                if (localStorage.getItem(keyValue)){
+                    var oldValue = localStorage.getItem(keyValue);//e.target.innerHTML;
                     e.target.innerHTML="";
                 } else {var oldValue ="";}
                 myInput = document.createElement("input");
@@ -148,19 +157,38 @@ function myInputEvent(cell){
                 myInput.addEventListener("blur", 
                     function(){
                         //write to localStorage as "id of td" = "value of input"
-                        var keyValue = e.target.getAttribute("id");
-                        //myInput.parentNode.getAttribute("id"); 
+                        
                         if (myInput.value) {
                             localStorage.setItem(keyValue, myInput.value);
                         }
                         //kill <input/> 
                         myInput.remove();
+                        //write value in td
+                        var strOfData = localStorage.getItem(keyValue);
+                        if (strOfData){
+                        if (strOfData.charAt(0) === '='){
+                            e.target.innerHTML = parseFormula(strOfData);
+                        }
+                        else 
                         e.target.innerHTML = 
                         localStorage.getItem(keyValue);
+                        }
                     });
                 e.target.appendChild(myInput);
                 //delegate focus in new <input>
                 e.target.childNodes[0].focus();
                 
             });
+}
+function parseFormula(strOfData){
+    //except first symbol '=' and convert to upper case
+    str = strOfData.slice(1).toUpperCase();
+    var nameOfCol = str.substr(0,str.search(/\d/));
+    var numOfCol = getNumCol(nameOfCol);
+    var numOfRow = parseInt(str.slice(str.search(/\d/)));
+    var table = document.getElementsByClassName("visible")[0];
+    if (numOfCol&&numOfRow){
+    var x = table.rows[numOfRow].cells[numOfCol+1].innerText;}
+    if (x) {return x} else {return 0}
+    
 }
