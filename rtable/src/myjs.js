@@ -2,7 +2,6 @@
 var numRow = 30, numCol = 30, numSheets = 3, maxNumCol = 26*26*26; 
 var rowNum, cellNum;//coordinates of cell (still dosn't work)
 var myTd, myTh, node, nameCol, myTr;
-var numLetter = 26, numLetterSqr = numLetter * numLetter;//quantity of letters ('A'.. 'Z')
 
 function createTable(numSheet){
     var myInput;
@@ -58,23 +57,6 @@ for (var i = 0; i < numRow; i++) {
 }
 myElement.appendChild(myTb);
 }
-//list of char A - Z
-function getChar(i){       
-    var startChar = "A";
-    endChar = "Z";
-    chCount = endChar.charCodeAt(0) - startChar.charCodeAt(0) + 1;
-    return String.fromCharCode(startChar.charCodeAt(0) + i) 
-}
-function setNameCol(i){
-    if (i<numLetter) {return getChar(i);}
-    else if (i<numLetterSqr){return getChar(Math.floor(i/numLetter)-1)+
-        getChar(i%numLetter);}
-    else {var x1 = Math.floor(i/numLetterSqr);
-      var x2 = Math.floor((i%numLetterSqr)/numLetter);
-      var x3 = i - x1*numLetterSqr - x2*numLetter;
-      return getChar(x1-1)+
-      getChar(x2)+getChar(x3);}
-  }
 
   function setData(){
     this.getAttribute("id");
