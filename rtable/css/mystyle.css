@@ -45,3 +45,11 @@ table, td, th {
     th {height: 20px; width: 84px;}
 
     *.hidden {display: none;}
+
+    #stringOfFunction{
+        border: 1px solid black;width: 760px;
+    }
+
+    span{
+        background-color: #eee;
+    }
