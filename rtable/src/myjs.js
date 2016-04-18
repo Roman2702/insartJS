@@ -154,6 +154,16 @@ function myInputEvent(cell){
                 } else {var oldValue ="";}
                 myInput = document.createElement("input");
                 myInput.value = oldValue;
+                document.getElementById("stringOfFunction").value = oldValue;
+
+                //duplicate of input value in stringOfFunction
+                myInput.addEventListener("input",function(){
+                    var x = this.value;
+                    document.getElementById("stringOfFunction").value = x;
+                });
+
+
+
                 myInput.addEventListener("blur", 
                     function(){
                         //write to localStorage as "id of td" = "value of input"
@@ -163,6 +173,8 @@ function myInputEvent(cell){
                         }
                         //kill <input/> 
                         myInput.remove();
+                        //clear stringOfFunction
+                        document.getElementById("stringOfFunction").value = '';
                         //write value in td
                         var strOfData = localStorage.getItem(keyValue);
                         if (strOfData){

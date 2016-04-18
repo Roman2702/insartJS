@@ -47,7 +47,7 @@ table, td, th {
     *.hidden {display: none;}
 
     #stringOfFunction{
-        border: 1px solid black;width: 760px;
+        border: 1px solid black;width: 760px; text-align: left;
     }
 
     span{
