@@ -188,17 +188,8 @@ function parseFormula(strOfData){
         var nameOfCol = nameOfData.substr(0,nameOfData.search(/\d/));
         var numOfCol = getNumCol(nameOfCol);
         var numOfRow = parseInt(nameOfData.slice(nameOfData.search(/\d/)));
-        if (numOfCol&&numOfRow){
+        if ((numOfCol+1)&&numOfRow){
             var x = table.rows[numOfRow].cells[numOfCol+1].innerText;}
             if (x) {return x} else {return 0}
         }));
 }
-/*function parseOfName(nameOfData){
-    var table = document.getElementsByClassName("visible")[0];
-    var nameOfCol = nameOfData.substr(0,nameOfData.search(/\d/));
-    var numOfCol = getNumCol(nameOfCol);
-    var numOfRow = parseInt(nameOfData.slice(nameOfData.search(/\d/)));
-    if (numOfCol&&numOfRow){
-    var x = table.rows[numOfRow].cells[numOfCol+1].innerText;}
-    if (x) {return x} else {return 0}
-}*/
