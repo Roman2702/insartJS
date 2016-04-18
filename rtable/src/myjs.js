@@ -182,13 +182,23 @@ function myInputEvent(cell){
 }
 function parseFormula(strOfData){
     //except first symbol '=' and convert to upper case
-    str = strOfData.slice(1).toUpperCase();
-    var nameOfCol = str.substr(0,str.search(/\d/));
-    var numOfCol = getNumCol(nameOfCol);
-    var numOfRow = parseInt(str.slice(str.search(/\d/)));
+    var str = strOfData.slice(1).toUpperCase();
+    return eval(str.replace( /([A-Z]+\d+)/g, function (nameOfData){ 
+        var table = document.getElementsByClassName("visible")[0];
+        var nameOfCol = nameOfData.substr(0,nameOfData.search(/\d/));
+        var numOfCol = getNumCol(nameOfCol);
+        var numOfRow = parseInt(nameOfData.slice(nameOfData.search(/\d/)));
+        if (numOfCol&&numOfRow){
+            var x = table.rows[numOfRow].cells[numOfCol+1].innerText;}
+            if (x) {return x} else {return 0}
+        }));
+}
+/*function parseOfName(nameOfData){
     var table = document.getElementsByClassName("visible")[0];
+    var nameOfCol = nameOfData.substr(0,nameOfData.search(/\d/));
+    var numOfCol = getNumCol(nameOfCol);
+    var numOfRow = parseInt(nameOfData.slice(nameOfData.search(/\d/)));
     if (numOfCol&&numOfRow){
     var x = table.rows[numOfRow].cells[numOfCol+1].innerText;}
     if (x) {return x} else {return 0}
-    
-}
+}*/
