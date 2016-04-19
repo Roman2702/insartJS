@@ -5,7 +5,7 @@ var myTd, myTh, node, nameCol, myTr;
 //clear localStorage
 localStorage.clear();
 function createTable(numSheet){
-    var myInput;
+    //var myInput;
     var myElement = document.getElementById("myTable");
 //create a table in div id = myTable
 var myTb = document.createElement("table");
@@ -144,25 +144,32 @@ function addCol(){
 }
 
 function myInputEvent(cell){
+    var myInput;     
     //add event on <input>
     cell.addEventListener("dblclick", 
-            function(e){
-                var keyValue = e.target.getAttribute("id");
-                if (localStorage.getItem(keyValue)){
+        function(e){
+            var keyValue = e.target.getAttribute("id");
+            if (localStorage.getItem(keyValue)){
                     var oldValue = localStorage.getItem(keyValue);//e.target.innerHTML;
                     e.target.innerHTML="";
                 } else {var oldValue ="";}
-                myInput = document.createElement("input");
-                myInput.value = oldValue;
-                document.getElementById("stringOfFunction").value = oldValue;
+            myInput = document.createElement("input");
+            myInput.value = oldValue;
+            document.getElementById("stringOfFunction").innerText = oldValue;
 
                 //duplicate of input value in stringOfFunction
                 myInput.addEventListener("input",function(){
                     var x = this.value;
-                    document.getElementById("stringOfFunction").value = x;
+                    document.getElementById("stringOfFunction").innerText = x;
                 });
 
-
+                            //duplicate of stringOfFunction  value in input
+                            var currentTd = e.target;
+                            console.log(currentTd.id);
+                            var stringOfFunc = document.getElementById("stringOfFunction");
+                            stringOfFunc.addEventListener("click", function(){
+                                var x = e.target.innerHTML;
+                                console.log('currentTd = ' + currentTd.id + ' x =' + x);});                    
 
                 myInput.addEventListener("blur", 
                     function(){
@@ -174,16 +181,56 @@ function myInputEvent(cell){
                         //kill <input/> 
                         myInput.remove();
                         //clear stringOfFunction
+                        document.getElementById("stringOfFunction").innerText = '';
+
+
+
+
+/*
+                //duplicate of stringOfFunction  value in input
+                var currentTd = e.target;
+                var stringOfFunc = document.getElementById("stringOfFunction");
+                stringOfFunc.addEventListener("click", function(){
+                    var x = e.target.innerHTML;
+                    //console.log('currentTd = ' + currentTd.id + ' x =' + x);
+                    this.value = x;
+                    stringOfFunc.addEventListener("input",function(){
+                        var x = this.value;
+                        document.getElementById(currentTd.id).innerText = x;
+                        console.log(currentTd.id);
+                    });
+                    stringOfFunc.addEventListener("blur", function(){
+                        //write to localStorage as "id of td" = "value of input"
+                        
+                        if (stringOfFunc.value) {
+                            localStorage.setItem(keyValue, stringOfFunc.value);
+                        }
+                        //kill <input/> 
+                        stringOfFunc.remove();
+                        //clear stringOfFunction
                         document.getElementById("stringOfFunction").value = '';
                         //write value in td
                         var strOfData = localStorage.getItem(keyValue);
                         if (strOfData){
-                        if (strOfData.charAt(0) === '='){
-                            e.target.innerHTML = parseFormula(strOfData);
+                            if (strOfData.charAt(0) === '='){
+                                e.target.innerHTML = parseFormula(strOfData);
+                            }
+                            else 
+                                e.target.innerHTML = 
+                                localStorage.getItem(keyValue);
                         }
-                        else 
-                        e.target.innerHTML = 
-                        localStorage.getItem(keyValue);
+                    });
+                });*/
+
+                        //write value in td
+                        var strOfData = localStorage.getItem(keyValue);
+                        if (strOfData){
+                            if (strOfData.charAt(0) === '='){
+                                e.target.innerHTML = parseFormula(strOfData);
+                            }
+                            else 
+                                e.target.innerHTML = 
+                                localStorage.getItem(keyValue);
                         }
                     });
                 e.target.appendChild(myInput);
