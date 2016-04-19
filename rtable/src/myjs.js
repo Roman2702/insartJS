@@ -161,8 +161,16 @@ function myInputEvent(cell){
                 //duplicate of input value in stringOfFunction
                 myInput.addEventListener("input",function(){
                     var x = this.value;
-                    document.getElementById("stringOfFunction").innerText = x;
+                    document.getElementById("stringOfFunction").innerText = x;                
                 });
+
+                myInput.addEventListener("keypress", function(e) {
+                if (e.keyCode === 13) {
+                myInput.blur();
+                //e.preventDefault();
+                }
+                });
+                
 
                             //for duplicating of stringOfFunction  value in input
                             //remember last active td id
@@ -232,6 +240,12 @@ function stringOfFunctionEvent(){
         var x = this.value;
         myCurrentTd.innerText = x;
         });
+                myInput.addEventListener("keypress", function(e) {
+                if (e.keyCode === 13) {
+                myInput.blur();
+                //e.preventDefault();
+                }
+                });
 
                 myInput.addEventListener("blur", 
                     function(){
