@@ -2,6 +2,7 @@
 var numRow = 30, numCol = 30, numSheets = 3, maxNumCol = 26*26*26; 
 var rowNum, cellNum;//coordinates of cell (still dosn't work)
 var myTd, myTh, node, nameCol, myTr;
+var currentTd ='A1';
 //clear localStorage
 localStorage.clear();
 function createTable(numSheet){
@@ -163,13 +164,11 @@ function myInputEvent(cell){
                     document.getElementById("stringOfFunction").innerText = x;
                 });
 
-                            //duplicate of stringOfFunction  value in input
-                            var currentTd = e.target;
-                            console.log(currentTd.id);
-                            var stringOfFunc = document.getElementById("stringOfFunction");
-                            stringOfFunc.addEventListener("click", function(){
-                                var x = e.target.innerHTML;
-                                console.log('currentTd = ' + currentTd.id + ' x =' + x);});                    
+                            //for duplicating of stringOfFunction  value in input
+                            //remember last active td id
+                            currentTd = e.target.id;
+                            console.log(currentTd);
+                  
 
                 myInput.addEventListener("blur", 
                     function(){
@@ -183,44 +182,6 @@ function myInputEvent(cell){
                         //clear stringOfFunction
                         document.getElementById("stringOfFunction").innerText = '';
 
-
-
-
-/*
-                //duplicate of stringOfFunction  value in input
-                var currentTd = e.target;
-                var stringOfFunc = document.getElementById("stringOfFunction");
-                stringOfFunc.addEventListener("click", function(){
-                    var x = e.target.innerHTML;
-                    //console.log('currentTd = ' + currentTd.id + ' x =' + x);
-                    this.value = x;
-                    stringOfFunc.addEventListener("input",function(){
-                        var x = this.value;
-                        document.getElementById(currentTd.id).innerText = x;
-                        console.log(currentTd.id);
-                    });
-                    stringOfFunc.addEventListener("blur", function(){
-                        //write to localStorage as "id of td" = "value of input"
-                        
-                        if (stringOfFunc.value) {
-                            localStorage.setItem(keyValue, stringOfFunc.value);
-                        }
-                        //kill <input/> 
-                        stringOfFunc.remove();
-                        //clear stringOfFunction
-                        document.getElementById("stringOfFunction").value = '';
-                        //write value in td
-                        var strOfData = localStorage.getItem(keyValue);
-                        if (strOfData){
-                            if (strOfData.charAt(0) === '='){
-                                e.target.innerHTML = parseFormula(strOfData);
-                            }
-                            else 
-                                e.target.innerHTML = 
-                                localStorage.getItem(keyValue);
-                        }
-                    });
-                });*/
 
                         //write value in td
                         var strOfData = localStorage.getItem(keyValue);
@@ -252,3 +213,58 @@ function parseFormula(strOfData){
             if (x) {return x} else {return 0}
         }));
 }
+function stringOfFunctionEvent(){
+    var myStringOfFunction = document.getElementById("stringOfFunction");
+    myStringOfFunction.addEventListener("click", 
+        function(e){
+    var myInput;  
+    console.log('stringOfFunctionEvent' + currentTd);   
+    var keyValue = currentTd;
+    var myCurrentTd = document.getElementById(currentTd);
+    if (localStorage.getItem(keyValue)){
+                    var oldValue = localStorage.getItem(keyValue);
+                    //e.target.innerHTML="";
+                } else {var oldValue ="";}
+    var myInput = document.createElement("input");
+    myInput.value = oldValue;
+    //duplicate of stringOfFunction value in last active td
+    myInput.addEventListener("input",function(){
+        var x = this.value;
+        myCurrentTd.innerText = x;
+        });
+
+                myInput.addEventListener("blur", 
+                    function(){
+                        //write to localStorage as "id of td" = "value of input"
+                        
+                        if (myInput.value) {
+                            localStorage.setItem(keyValue, myInput.value);
+                        }
+                        //kill <input/> 
+                        myInput.remove();
+                        //clear stringOfFunction
+                        myStringOfFunction.innerHTML = '';
+
+
+                        //write value in td
+                        var strOfData = localStorage.getItem(keyValue);
+                        if (strOfData){
+                            if (strOfData.charAt(0) === '='){
+                                myCurrentTd.innerHTML = parseFormula(strOfData);
+                            }
+                            else 
+                                myCurrentTd.innerHTML = 
+                                localStorage.getItem(keyValue);
+                        }
+                    });
+
+    
+    myStringOfFunction.appendChild(myInput).setAttribute("id","inputFormula");
+    
+    //delegate focus in new <input>
+    myStringOfFunction.childNodes[0].focus();
+
+});
+}
+
+ 
