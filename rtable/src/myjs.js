@@ -188,7 +188,7 @@ function myInputEvent(cell) {
             //for duplicating of stringOfFunction  value in input
             //remember last active td id
             currentTd = e.target.id;
-            console.log(currentTd);
+            //console.log(currentTd);
 
 
             myInput.addEventListener("blur",
@@ -197,7 +197,7 @@ function myInputEvent(cell) {
 
                     if (myInput.value) {
                         localStorage.setItem(keyValue, myInput.value);
-                    }
+                    } else {localStorage.removeItem(keyValue);};
                     //kill <input/> 
                     myInput.remove();
                     //clear stringOfFunction
@@ -213,6 +213,7 @@ function myInputEvent(cell) {
                             e.target.innerHTML =
                             localStorage.getItem(keyValue);
                     }
+                myTableRefresh();
                 });
             e.target.appendChild(myInput);
             //delegate focus in new <input>
@@ -224,6 +225,7 @@ function myInputEvent(cell) {
 function parseFormula(strOfData) {
     //except first symbol '=' and convert to upper case
     var str = strOfData.slice(1).toUpperCase();
+    try {
     return eval(str.replace(/([A-Z]+\d+)/g, function(nameOfData) {
         var table = document.getElementsByClassName("visible")[0];
         var nameOfCol = nameOfData.substr(0, nameOfData.search(/\d/));
@@ -239,13 +241,17 @@ function parseFormula(strOfData) {
         }
     }));
 }
+catch(err){
+    return 'Error!';
+}
+}
 
 function stringOfFunctionEvent() {
     var myStringOfFunction = document.getElementById("stringOfFunction");
     myStringOfFunction.addEventListener("click",
         function(e) {
             var myInput;
-            console.log('stringOfFunctionEvent' + currentTd);
+            //console.log('stringOfFunctionEvent' + currentTd);
             var keyValue = currentTd;
             var myCurrentTd = document.getElementById(currentTd);
             if (localStorage.getItem(keyValue)) {
@@ -275,6 +281,7 @@ function stringOfFunctionEvent() {
                     if (myInput.value) {
                         localStorage.setItem(keyValue, myInput.value);
                     }
+                    else {localStorage.removeItem(keyValue);};
                     //kill <input/> 
                     myInput.remove();
                     //clear stringOfFunction
@@ -290,6 +297,7 @@ function stringOfFunctionEvent() {
                             myCurrentTd.innerHTML =
                             localStorage.getItem(keyValue);
                     }
+                myTableRefresh();                  
                 });
 
 
@@ -299,4 +307,25 @@ function stringOfFunctionEvent() {
             myStringOfFunction.childNodes[0].focus();
 
         });
+}
+myTableRefresh = function () {     //  reCalculation all cells in active sheet
+    var cell, myCell;    
+    // Find a <table> element with class="visible":
+    var table = document.getElementsByClassName("visible")[0];
+    var numCol = table.rows[0].cells.length;
+    var numRow = table.rows.length;
+    for (var i = 1; i < numRow; i++) {
+        for (var j = 1; j < numCol; j++) {
+        
+        cell = table.rows[i].cells[j];
+        if (cell.innerText) {
+            myCell = String(localStorage.getItem(cell.getAttribute('id')));
+            if (myCell.charAt(0) === '=') {
+                cell.innerHTML = parseFormula(myCell);
+            }          
+        }
+        }
+    }
+
+        
 }
