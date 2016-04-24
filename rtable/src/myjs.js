@@ -6,7 +6,7 @@ var numRow = 30,
     maxNumCol = 26 * 26 * 26;
 var rowNum, cellNum; //coordinates of cell (still dosn't work)
 var myTd, myTh, node, nameCol, myTr;
-var currentTd = 'A1';
+var currentTd = startTd;//'A1';
 
 
 function createTable(numSheet) {
@@ -184,6 +184,9 @@ function myInputEvent(cell) {
             currentTd = e.target.id;
             //console.log(currentTd);
 
+            			//test
+            stringOfFunctionEvent();
+
 
             myInput.addEventListener("blur",
                 function() {
@@ -333,5 +336,5 @@ function myTableRefresh() {     //  reCalculation all cells in active sheet
 function onMyTableLoad(){
 	localStorage.clear();
 	createSheets(3);
-	stringOfFunctionEvent();
+	//stringOfFunctionEvent();
 }
