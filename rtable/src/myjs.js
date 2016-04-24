@@ -54,10 +54,10 @@ function createTable(numSheet) {
         for (var j = 1; j <= numCol; j++) {
             myTd = document.createElement("td");
             myTd.setAttribute("id",
-                (setNameCol(j - 1) + (i + 1))); //set id for td
+            ('$' + nameSheet + '$' + setNameCol(j-1) + '$' + (i+1))); //set id for td
             /*myTd.setAttribute("id",
                 ('$' + nameSheet + '$' + setNameCol(j-1) +
-                '$' + (i+1)));//set id for td*/
+                '$' + (i+1)));//set id for td like $sheet1$A$1*/
             myTd.setAttribute("class", "notIndex");
             //add input in <td> if onclick  
             myInputEvent(myTd);
@@ -120,7 +120,7 @@ function addRow() {
     for (var i = 1; i < numCol; i++) {
         var cell = row.insertCell(i);
         cell.setAttribute("id",
-            (setNameCol(i - 1) + lastRowNumber)); //set id for td
+            ('$' + nameSheet + '$' + setNameCol(lastColNumber - 1) + i)); //set id for td
         /*cell.setAttribute("id",
             ('$' + nameSheet + '$' + setNameCol(i-1) +
             '$' + lastRowNumber));//set id for td*/
@@ -145,7 +145,7 @@ function addCol() {
     for (var i = 1; i < numRow; i++) {
         var cell = table.rows[i].insertCell(lastColNumber);
         cell.setAttribute("id",
-            (setNameCol(lastColNumber - 1) + i)); //set id for td
+            ('$' + nameSheet + '$' + setNameCol(lastColNumber - 1) + i)); //set id for td
 
         /*cell.setAttribute("id",
             ('$' + nameSheet + '$' + setNameCol(lastColNumber-1) +
