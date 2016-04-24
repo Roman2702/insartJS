@@ -55,9 +55,6 @@ function createTable(numSheet) {
             myTd = document.createElement("td");
             myTd.setAttribute("id",
             ('$' + nameSheet + '$' + setNameCol(j-1) + '$' + (i+1))); //set id for td
-            /*myTd.setAttribute("id",
-                ('$' + nameSheet + '$' + setNameCol(j-1) +
-                '$' + (i+1)));//set id for td like $sheet1$A$1*/
             myTd.setAttribute("class", "notIndex");
             //add input in <td> if onclick  
             myInputEvent(myTd);
@@ -84,23 +81,28 @@ function createSheets(numSheets) {
     }
 }
 
-//change vibility for all sheets ecsept numActiveSheet
+//change visibility for all sheets except numActiveSheet
 function setVisible(numActiveSheet) {
+	var temp = document.getElementById("sheetSwitch");
     for (var i = 0; i < numSheets; i++) {
         if (i === (numActiveSheet - 1)) {
             document.getElementsByTagName("table")[i].setAttribute("class", "visible");
+            temp.getElementsByTagName("button")[i+1].setAttribute("class", "btn btn-success");
         } else {
             document.getElementsByTagName("table")[i].setAttribute("class", "hidden");
+            temp.getElementsByTagName("button")[i+1].setAttribute("class", "btn btn-default");
         }
     }
 }
 //add new sheet
 function addSheet() {
-    createTable(++numSheets);
+    var numCurrSheet = ++numSheets;
+    createTable(numCurrSheet);
     myElement = document.getElementById("sheetSwitch");
     var myBut = document.createElement("button");
-    myBut.setAttribute("onclick", "setVisible(numSheets)");
-    node = document.createTextNode("sheet" + numSheets);
+    myBut.setAttribute("onclick", ("setVisible(" + numCurrSheet + ")"));
+    myBut.setAttribute("class", "btn btn-default");
+    node = document.createTextNode("sheet" + numCurrSheet);
     myBut.appendChild(node);
     myElement.appendChild(myBut);
 }
@@ -121,9 +123,6 @@ function addRow() {
         var cell = row.insertCell(i);
         cell.setAttribute("id",
             ('$' + nameSheet + '$' + setNameCol(lastColNumber - 1) + i)); //set id for td
-        /*cell.setAttribute("id",
-            ('$' + nameSheet + '$' + setNameCol(i-1) +
-            '$' + lastRowNumber));//set id for td*/
         cell.setAttribute("class", "notIndex");
         myInputEvent(cell);
     }
@@ -141,15 +140,10 @@ function addCol() {
     table.rows[0].appendChild(myTh);
 
     var numRow = table.rows.length;
-    //    console.log(numRow);
     for (var i = 1; i < numRow; i++) {
         var cell = table.rows[i].insertCell(lastColNumber);
         cell.setAttribute("id",
             ('$' + nameSheet + '$' + setNameCol(lastColNumber - 1) + i)); //set id for td
-
-        /*cell.setAttribute("id",
-            ('$' + nameSheet + '$' + setNameCol(lastColNumber-1) +
-            '$' + i));//set id for td*/
         cell.setAttribute("class", "notIndex");
         myInputEvent(cell);
     }

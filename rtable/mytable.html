@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+	
+	<link href="bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
 	<link rel="stylesheet" type="text/css" href="css\mystyle.css">
 	<!--source src="src\my1.js"-->
 	<source src="src\myjs.js">
@@ -9,12 +11,13 @@
 		<script type="text/javascript" src="src\myutil.js"></script>
 		<script type="text/javascript" src="src\myjs.js">
 		</script>
-		<div id="sheetSwitch">
-			<button onclick="addSheet()">add sheet</button>
-			<button onclick="setVisible(1)">sheet1</button>
-			<button onclick="setVisible(2)">sheet2</button>
-			<button onclick="setVisible(3)">sheet3</button>
+		<div id="sheetSwitch" class="btn-group">
+			<button type="button" class="btn btn-primary" onclick="addSheet()">add sheet</button>
+			<button type="button" class="btn btn-success" onclick="setVisible(1)">sheet1</button>
+			<button type="button" class="btn btn-default" onclick="setVisible(2)">sheet2</button>
+			<button type="button" class="btn btn-default" onclick="setVisible(3)">sheet3</button>
 		</div>
+
 		<div> <span>F(x)</span> </div>
 		<div id="stringOfFunction">
 		click on some cell to start 
