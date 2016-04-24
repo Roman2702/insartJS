@@ -2,12 +2,12 @@
 var numRow = 30,
     numCol = 30,
     numSheets = 3,
+    startTd = '$sheet1$A$1';
     maxNumCol = 26 * 26 * 26;
 var rowNum, cellNum; //coordinates of cell (still dosn't work)
 var myTd, myTh, node, nameCol, myTr;
 var currentTd = 'A1';
-//clear localStorage
-localStorage.clear();
+
 
 function createTable(numSheet) {
     //var myInput;
@@ -242,12 +242,18 @@ catch(err){
 
 function stringOfFunctionEvent() {
     var myStringOfFunction = document.getElementById("stringOfFunction");
-    myStringOfFunction.addEventListener("click",
+    // 
+        myStringOfFunction.addEventListener("click",
         function(e) {
             var myInput;
             //console.log('stringOfFunctionEvent' + currentTd);
             var keyValue = currentTd;
             var myCurrentTd = document.getElementById(currentTd);
+            if (myStringOfFunction.innerText === "click on some cell to start"){
+            	myCurrentTd = document.getElementById(startTd);
+            	myStringOfFunction.innerText  = "";
+
+            }
             if (localStorage.getItem(keyValue)) {
                 var oldValue = localStorage.getItem(keyValue);
                 //e.target.innerHTML="";
@@ -291,6 +297,8 @@ function stringOfFunctionEvent() {
                             myCurrentTd.innerHTML =
                             localStorage.getItem(keyValue);
                     }
+                //keyValue = "";
+                //currentTd = "";
                 myTableRefresh();                  
                 });
 
@@ -302,7 +310,7 @@ function stringOfFunctionEvent() {
 
         });
 }
-myTableRefresh = function () {     //  reCalculation all cells in active sheet
+function myTableRefresh() {     //  reCalculation all cells in active sheet
     var cell, myCell;    
     // Find a <table> element with class="visible":
     var table = document.getElementsByClassName("visible")[0];
@@ -319,7 +327,11 @@ myTableRefresh = function () {     //  reCalculation all cells in active sheet
             }          
         }
         }
-    }
+    }        
+}
 
-        
+function onMyTableLoad(){
+	localStorage.clear();
+	createSheets(3);
+	stringOfFunctionEvent();
 }
