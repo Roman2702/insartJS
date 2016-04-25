@@ -161,6 +161,8 @@ function myInputEvent(cell) {
             } else {
                 var oldValue = "";
             }
+            if (oldValue.charAt(0) === '=') {setColorActiveCell(oldValue)}
+
             myInput = document.createElement("input");
             myInput.value = oldValue;
             document.getElementById("stringOfFunction").innerText = oldValue;
@@ -169,6 +171,7 @@ function myInputEvent(cell) {
             myInput.addEventListener("input", function() {
                 var x = this.value;
                 document.getElementById("stringOfFunction").innerText = x;
+                setColorActiveCell(x);
             });
 
             myInput.addEventListener("keypress", function(e) {
@@ -211,6 +214,7 @@ function myInputEvent(cell) {
                             localStorage.getItem(keyValue);
                     }
                 myTableRefresh();
+                //document.getElementsByClassName("visible").style.border = "none";
                 });
             e.target.appendChild(myInput);
             //delegate focus in new <input>
@@ -222,6 +226,7 @@ function myInputEvent(cell) {
 function parseFormula(strOfData) {
     //except first symbol '=' and convert to upper case
     var str = strOfData.slice(1).toUpperCase();
+    removeColorActiveCell(strOfData);
     try {
     return eval(str.replace(/([A-Z]+\d+)/g, function(nameOfData) {
         var table = document.getElementsByClassName("visible")[0];
@@ -241,6 +246,48 @@ function parseFormula(strOfData) {
 catch(err){
     return 'Error!';
 }
+	
+
+
+}
+
+function setColorActiveCell(strOfData){
+	var table = document.getElementsByClassName("visible")[0];
+	var str = strOfData.slice(1).toUpperCase();
+	var temp = str.split(/\W/g);
+
+	for (var i = 0; i < temp.length; i++) {
+		var nameOfCol = temp[i].substr(0, temp[i].search(/\d/));
+        var numOfRow = parseInt(temp[i].slice(temp[i].search(/\d/)));
+        if ((nameOfCol) && numOfRow) {
+            var cell = document.getElementById("$sheet1" +
+            	"$" + nameOfCol + "$" + numOfRow);
+			cell.style.border = "dotted";
+            cell.style.borderColor = "hsl(" + (i * 30) + ", 100%, 50%)";
+            
+            }				
+	}
+	//test
+	//document.getElementById("$sheet1$A$1").style.border = "none";
+}
+
+function removeColorActiveCell(strOfData){
+	var table = document.getElementsByClassName("visible")[0];
+	var str = strOfData.slice(1).toUpperCase();
+	var temp = str.split(/\W/g);
+
+	for (var i = 0; i < temp.length; i++) {
+		var nameOfCol = temp[i].substr(0, temp[i].search(/\d/));
+        var numOfRow = parseInt(temp[i].slice(temp[i].search(/\d/)));
+        if ((nameOfCol) && numOfRow) {
+            var cell = document.getElementById("$sheet1" +
+            	"$" + nameOfCol + "$" + numOfRow);
+			cell.style.border = "1px solid #999";
+			//cell.style.border = "none";
+
+            
+            }				
+	}
 }
 
 function stringOfFunctionEvent() {
@@ -263,12 +310,16 @@ function stringOfFunctionEvent() {
             } else {
                 var oldValue = "";
             }
+
+            if (oldValue.charAt(0) === '=') {setColorActiveCell(oldValue)}            
+
             var myInput = document.createElement("input");
             myInput.value = oldValue;
             //duplicate of stringOfFunction value in last active td
             myInput.addEventListener("input", function() {
                 var x = this.value;
                 myCurrentTd.innerText = x;
+                setColorActiveCell(x);
             });
             myInput.addEventListener("keypress", function(e) {
                 if (e.keyCode === 13) {
