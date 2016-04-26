@@ -193,6 +193,8 @@ function myInputEvent(cell) {
 
             myInput.addEventListener("blur",
                 function() {
+                    removeColorCell();
+
                     //write to localStorage as "id of td" = "value of input"
 
                     if (myInput.value) {
@@ -226,7 +228,7 @@ function myInputEvent(cell) {
 function parseFormula(strOfData) {
     //except first symbol '=' and convert to upper case
     var str = strOfData.slice(1).toUpperCase();
-    removeColorActiveCell(strOfData);
+    removeColorCell();
     try {
     return eval(str.replace(/([A-Z]+\d+)/g, function(nameOfData) {
         var table = document.getElementsByClassName("visible")[0];
@@ -271,24 +273,21 @@ function setColorActiveCell(strOfData){
 	//document.getElementById("$sheet1$A$1").style.border = "none";
 }
 
-function removeColorActiveCell(strOfData){
-	var table = document.getElementsByClassName("visible")[0];
-	var str = strOfData.slice(1).toUpperCase();
-	var temp = str.split(/\W/g);
-
-	for (var i = 0; i < temp.length; i++) {
-		var nameOfCol = temp[i].substr(0, temp[i].search(/\d/));
-        var numOfRow = parseInt(temp[i].slice(temp[i].search(/\d/)));
-        if ((nameOfCol) && numOfRow) {
-            var cell = document.getElementById("$sheet1" +
-            	"$" + nameOfCol + "$" + numOfRow);
-			cell.style.border = "1px solid #999";
-			//cell.style.border = "none";
-
-            
-            }				
-	}
+function removeColorCell(){
+	var cell, myCell;    
+    // Find a <table> element with class="visible":
+    var table = document.getElementsByClassName("visible")[0];
+    var numCol = table.rows[0].cells.length;
+    var numRow = table.rows.length;
+    for (var i = 1; i < numRow; i++) {
+        for (var j = 1; j < numCol; j++) {
+        
+        cell = table.rows[i].cells[j];
+        cell.style.border = "1px solid #999";
+        }
+    }  
 }
+
 
 function stringOfFunctionEvent() {
     var myStringOfFunction = document.getElementById("stringOfFunction");
@@ -330,6 +329,7 @@ function stringOfFunctionEvent() {
 
             myInput.addEventListener("blur",
                 function() {
+                	removeColorCell();
                     //write to localStorage as "id of td" = "value of input"
 
                     if (myInput.value) {
