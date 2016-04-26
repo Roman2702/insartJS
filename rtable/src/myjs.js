@@ -3,10 +3,10 @@ var numRow = 30,
     numCol = 30,
     numSheets = 3,
     startTd = '$sheet1$A$1';
-    maxNumCol = 26 * 26 * 26;
+maxNumCol = 26 * 26 * 26;
 var rowNum, cellNum; //coordinates of cell (still dosn't work)
 var myTd, myTh, node, nameCol, myTr;
-var currentTd = startTd;//'A1';
+var currentTd = startTd; //'A1';
 
 
 function createTable(numSheet) {
@@ -54,7 +54,7 @@ function createTable(numSheet) {
         for (var j = 1; j <= numCol; j++) {
             myTd = document.createElement("td");
             myTd.setAttribute("id",
-            ('$' + nameSheet + '$' + setNameCol(j-1) + '$' + (i+1))); //set id for td
+                ('$' + nameSheet + '$' + setNameCol(j - 1) + '$' + (i + 1))); //set id for td
             myTd.setAttribute("class", "notIndex");
             //add input in <td> if onclick  
             myInputEvent(myTd);
@@ -83,14 +83,14 @@ function createSheets(numSheets) {
 
 //change visibility for all sheets except numActiveSheet
 function setVisible(numActiveSheet) {
-	var temp = document.getElementById("sheetSwitch");
+    var temp = document.getElementById("sheetSwitch");
     for (var i = 0; i < numSheets; i++) {
         if (i === (numActiveSheet - 1)) {
             document.getElementsByTagName("table")[i].setAttribute("class", "visible");
-            temp.getElementsByTagName("button")[i+1].setAttribute("class", "btn btn-success");
+            temp.getElementsByTagName("button")[i + 1].setAttribute("class", "btn btn-success");
         } else {
             document.getElementsByTagName("table")[i].setAttribute("class", "hidden");
-            temp.getElementsByTagName("button")[i+1].setAttribute("class", "btn btn-default");
+            temp.getElementsByTagName("button")[i + 1].setAttribute("class", "btn btn-default");
         }
     }
 }
@@ -161,7 +161,9 @@ function myInputEvent(cell) {
             } else {
                 var oldValue = "";
             }
-            if (oldValue.charAt(0) === '=') {setColorActiveCell(oldValue)}
+            if (oldValue.charAt(0) === '=') {
+                setColorActiveCell(oldValue)
+            }
 
             myInput = document.createElement("input");
             myInput.value = oldValue;
@@ -187,7 +189,7 @@ function myInputEvent(cell) {
             currentTd = e.target.id;
             //console.log(currentTd);
 
-            			//test
+            //test
             stringOfFunctionEvent();
 
 
@@ -199,7 +201,9 @@ function myInputEvent(cell) {
 
                     if (myInput.value) {
                         localStorage.setItem(keyValue, myInput.value);
-                    } else {localStorage.removeItem(keyValue);};
+                    } else {
+                        localStorage.removeItem(keyValue);
+                    };
                     //kill <input/> 
                     myInput.remove();
                     //clear stringOfFunction
@@ -215,8 +219,8 @@ function myInputEvent(cell) {
                             e.target.innerHTML =
                             localStorage.getItem(keyValue);
                     }
-                myTableRefresh();
-                //document.getElementsByClassName("visible").style.border = "none";
+                    myTableRefresh();
+                    //document.getElementsByClassName("visible").style.border = "none";
                 });
             e.target.appendChild(myInput);
             //delegate focus in new <input>
@@ -230,87 +234,84 @@ function parseFormula(strOfData) {
     var str = strOfData.slice(1).toUpperCase();
     removeColorCell();
     try {
-    return eval(str.replace(/([A-Z]+\d+)/g, function(nameOfData) {
-        var table = document.getElementsByClassName("visible")[0];
-        var nameOfCol = nameOfData.substr(0, nameOfData.search(/\d/));
-        var numOfCol = getNumCol(nameOfCol);
-        var numOfRow = parseInt(nameOfData.slice(nameOfData.search(/\d/)));
-        if ((numOfCol + 1) && numOfRow) {
-            var x = table.rows[numOfRow].cells[numOfCol + 1].innerText;
-        }
-        if (x) {
-            return x
-        } else {
-            return 0
-        }
-    }));
+        return eval(str.replace(/([A-Z]+\d+)/g, function(nameOfData) {
+            var table = document.getElementsByClassName("visible")[0];
+            var nameOfCol = nameOfData.substr(0, nameOfData.search(/\d/));
+            var numOfCol = getNumCol(nameOfCol);
+            var numOfRow = parseInt(nameOfData.slice(nameOfData.search(/\d/)));
+            if ((numOfCol + 1) && numOfRow) {
+                var x = table.rows[numOfRow].cells[numOfCol + 1].innerText;
+            }
+            if (x) {
+                return x
+            } else {
+                return 0
+            }
+        }));
+    } catch (err) {
+        return 'Error!';
+    }
+
+
+
 }
-catch(err){
-    return 'Error!';
-}
-	
 
+function setColorActiveCell(strOfData) {
+    var table = document.getElementsByClassName("visible")[0];
+    var str = strOfData.slice(1).toUpperCase();
+    var temp = str.split(/\W/g);
 
-}
-
-function setColorActiveCell(strOfData){
-	var table = document.getElementsByClassName("visible")[0];
-	var str = strOfData.slice(1).toUpperCase();
-	var temp = str.split(/\W/g);
-
-	for (var i = 0; i < temp.length; i++) {
-		var nameOfCol = temp[i].substr(0, temp[i].search(/\d/));
+    for (var i = 0; i < temp.length; i++) {
+        var nameOfCol = temp[i].substr(0, temp[i].search(/\d/));
         var numOfRow = parseInt(temp[i].slice(temp[i].search(/\d/)));
         if ((nameOfCol) && numOfRow) {
             var cell = document.getElementById("$sheet1" +
-            	"$" + nameOfCol + "$" + numOfRow);
-			cell.style.border = "dotted";
+                "$" + nameOfCol + "$" + numOfRow);
+            cell.style.border = "dotted";
             cell.style.borderColor = "hsl(" + (i * 30) + ", 100%, 50%)";
-            
-            }				
-	}
-	//test
-	//document.getElementById("$sheet1$A$1").style.border = "none";
+
+        }
+    }
+    //test
+    //document.getElementById("$sheet1$A$1").style.border = "none";
 }
 
-function removeColorCell(){
-	var cell, myCell;    
+function removeColorCell() {
+    var cell, myCell;
     // Find a <table> element with class="visible":
     var table = document.getElementsByClassName("visible")[0];
     var numCol = table.rows[0].cells.length;
     var numRow = table.rows.length;
     for (var i = 1; i < numRow; i++) {
         for (var j = 1; j < numCol; j++) {
-        
-        cell = table.rows[i].cells[j];
-        cell.style.border = "1px solid #999";
+
+            cell = table.rows[i].cells[j];
+            cell.style.border = "1px solid #999";
         }
-    }  
+    }
 }
 
 
 function stringOfFunctionEvent() {
     var myStringOfFunction = document.getElementById("stringOfFunction");
-    // 
-        myStringOfFunction.addEventListener("click",
-        function(e) {
+    function eventInput() {
             var myInput;
-            //console.log('stringOfFunctionEvent' + currentTd);
             var keyValue = currentTd;
             var myCurrentTd = document.getElementById(currentTd);
-            if (myStringOfFunction.innerText === "click on some cell to start"){
-            	myCurrentTd = document.getElementById(startTd);
-            	myStringOfFunction.innerText  = "";
+            if (myStringOfFunction.innerText === "click on some cell to start") {
+                myCurrentTd = document.getElementById(startTd);
+                myStringOfFunction.innerText = "";
 
             }
             if (localStorage.getItem(keyValue)) {
                 var oldValue = localStorage.getItem(keyValue);
-                //e.target.innerHTML="";
             } else {
                 var oldValue = "";
             }
 
-            if (oldValue.charAt(0) === '=') {setColorActiveCell(oldValue)}            
+            if (oldValue.charAt(0) === '=') {
+                setColorActiveCell(oldValue)
+            }
 
             var myInput = document.createElement("input");
             myInput.value = oldValue;
@@ -329,13 +330,14 @@ function stringOfFunctionEvent() {
 
             myInput.addEventListener("blur",
                 function() {
-                	removeColorCell();
+                    removeColorCell();
                     //write to localStorage as "id of td" = "value of input"
 
                     if (myInput.value) {
                         localStorage.setItem(keyValue, myInput.value);
-                    }
-                    else {localStorage.removeItem(keyValue);};
+                    } else {
+                        localStorage.removeItem(keyValue);
+                    };
                     //kill <input/> 
                     myInput.remove();
                     //clear stringOfFunction
@@ -351,9 +353,8 @@ function stringOfFunctionEvent() {
                             myCurrentTd.innerHTML =
                             localStorage.getItem(keyValue);
                     }
-                //keyValue = "";
-                //currentTd = "";
-                myTableRefresh();                  
+                    myTableRefresh();
+                    myStringOfFunction.removeEventListener("click",eventInput);
                 });
 
 
@@ -362,30 +363,32 @@ function stringOfFunctionEvent() {
             //delegate focus in new <input>
             myStringOfFunction.childNodes[0].focus();
 
-        });
+        }
+    myStringOfFunction.addEventListener("click",eventInput);
 }
-function myTableRefresh() {     //  reCalculation all cells in active sheet
-    var cell, myCell;    
+
+function myTableRefresh() { //  reCalculation all cells in active sheet
+    var cell, myCell;
     // Find a <table> element with class="visible":
     var table = document.getElementsByClassName("visible")[0];
     var numCol = table.rows[0].cells.length;
     var numRow = table.rows.length;
     for (var i = 1; i < numRow; i++) {
         for (var j = 1; j < numCol; j++) {
-        
-        cell = table.rows[i].cells[j];
-        if (cell.innerText) {
-            myCell = String(localStorage.getItem(cell.getAttribute('id')));
-            if (myCell.charAt(0) === '=') {
-                cell.innerHTML = parseFormula(myCell);
-            }          
+
+            cell = table.rows[i].cells[j];
+            if (cell.innerText) {
+                myCell = String(localStorage.getItem(cell.getAttribute('id')));
+                if (myCell.charAt(0) === '=') {
+                    cell.innerHTML = parseFormula(myCell);
+                }
+            }
         }
-        }
-    }        
+    }
 }
 
-function onMyTableLoad(){
-	localStorage.clear();
-	createSheets(3);
-	//stringOfFunctionEvent();
+function onMyTableLoad() {
+    localStorage.clear();
+    createSheets(3);
+    //stringOfFunctionEvent();
 }
