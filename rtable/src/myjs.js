@@ -171,6 +171,7 @@ function myInputEvent(cell) {
 
             //duplicate of input value in stringOfFunction
             myInput.addEventListener("input", function() {
+                removeColorCell();
                 var x = this.value;
                 document.getElementById("stringOfFunction").innerText = x;
                 setColorActiveCell(x);
@@ -317,6 +318,7 @@ function stringOfFunctionEvent() {
             myInput.value = oldValue;
             //duplicate of stringOfFunction value in last active td
             myInput.addEventListener("input", function() {
+                removeColorCell();
                 var x = this.value;
                 myCurrentTd.innerText = x;
                 setColorActiveCell(x);
