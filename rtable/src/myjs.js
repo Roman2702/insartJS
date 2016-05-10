@@ -162,7 +162,8 @@ function myInputEvent(cell) {
                 var oldValue = "";
             }
             if (oldValue.charAt(0) === '=') {
-                setColorActiveCell(oldValue)
+                setColorActiveCell(oldValue);
+                //chooseCell();
             }
 
             myInput = document.createElement("input");
@@ -181,6 +182,7 @@ function myInputEvent(cell) {
                 if (e.keyCode === 13) {
                     myInput.blur();
                     //e.preventDefault();
+
                 }
             });
 
@@ -206,7 +208,7 @@ function myInputEvent(cell) {
                         localStorage.removeItem(keyValue);
                     };
                     //kill <input/> 
-                    myInput.remove();
+                    //myInput.remove();
                     //clear stringOfFunction
                     document.getElementById("stringOfFunction").innerText = '';
 
@@ -278,7 +280,7 @@ function setColorActiveCell(strOfData) {
 }
 
 function removeColorCell() {
-    var cell, myCell;
+    var cell;
     // Find a <table> element with class="visible":
     var table = document.getElementsByClassName("visible")[0];
     var numCol = table.rows[0].cells.length;
@@ -295,78 +297,107 @@ function removeColorCell() {
 
 function stringOfFunctionEvent() {
     var myStringOfFunction = document.getElementById("stringOfFunction");
+    var table = document.getElementsByClassName("visible")[0];
+
     function eventInput() {
-            var myInput;
-            var keyValue = currentTd;
-            var myCurrentTd = document.getElementById(currentTd);
-            if (myStringOfFunction.innerText === "click on some cell to start") {
-                myCurrentTd = document.getElementById(startTd);
-                myStringOfFunction.innerText = "";
-
-            }
-            if (localStorage.getItem(keyValue)) {
-                var oldValue = localStorage.getItem(keyValue);
-            } else {
-                var oldValue = "";
-            }
-
-            if (oldValue.charAt(0) === '=') {
-                setColorActiveCell(oldValue)
-            }
-
-            var myInput = document.createElement("input");
-            myInput.value = oldValue;
-            //duplicate of stringOfFunction value in last active td
-            myInput.addEventListener("input", function() {
-                removeColorCell();
-                var x = this.value;
-                myCurrentTd.innerText = x;
-                setColorActiveCell(x);
-            });
-            myInput.addEventListener("keypress", function(e) {
-                if (e.keyCode === 13) {
-                    myInput.blur();
-                    //e.preventDefault();
-                }
-            });
-
-            myInput.addEventListener("blur",
-                function() {
-                    removeColorCell();
-                    //write to localStorage as "id of td" = "value of input"
-
-                    if (myInput.value) {
-                        localStorage.setItem(keyValue, myInput.value);
-                    } else {
-                        localStorage.removeItem(keyValue);
-                    };
-                    //kill <input/> 
-                    myInput.remove();
-                    //clear stringOfFunction
-                    myStringOfFunction.innerHTML = '';
-
-
-                    //write value in td
-                    var strOfData = localStorage.getItem(keyValue);
-                    if (strOfData) {
-                        if (strOfData.charAt(0) === '=') {
-                            myCurrentTd.innerHTML = parseFormula(strOfData);
-                        } else
-                            myCurrentTd.innerHTML =
-                            localStorage.getItem(keyValue);
-                    }
-                    myTableRefresh();
-                    myStringOfFunction.removeEventListener("click",eventInput);
-                });
-
-
-            myStringOfFunction.appendChild(myInput).setAttribute("id", "inputFormula");
-
-            //delegate focus in new <input>
-            myStringOfFunction.childNodes[0].focus();
+        var myInput;
+        var cellRef = "";
+        var keyValue = currentTd;
+        var myCurrentTd = document.getElementById(currentTd);
+        if (myStringOfFunction.innerText === "click on some cell to start") {
+            myCurrentTd = document.getElementById(startTd);
+            myStringOfFunction.innerText = "";
 
         }
-    myStringOfFunction.addEventListener("click",eventInput);
+        if (localStorage.getItem(keyValue)) {
+            var oldValue = localStorage.getItem(keyValue);
+        } else {
+            var oldValue = "";
+        }
+
+        if (oldValue.charAt(0) === '=') {
+            setColorActiveCell(oldValue);
+
+        }
+
+        var myInput = document.createElement("input");
+        myInput.value = oldValue;
+
+        //duplicate of stringOfFunction value in last active td
+        myInput.addEventListener("input", function() {
+            removeColorCell();
+            var x = this.value;
+
+            myCurrentTd.innerText = x;
+            setColorActiveCell(x);
+        });
+        //blur only in enter key
+        myInput.addEventListener("keypress", function(e) {
+            if (e.keyCode === 13) {
+                //myInput.blur();
+                //e.preventDefault();
+                removeColorCell();
+                //write to localStorage as "id of td" = "value of input"
+
+                if (myInput.value) {
+                    localStorage.setItem(keyValue, myInput.value);
+                } else {
+                    localStorage.removeItem(keyValue);
+                };
+                //kill <input/> 
+                myInput.remove();
+                //clear stringOfFunction
+                myStringOfFunction.innerHTML = '';
+
+                //write value in td
+                var strOfData = localStorage.getItem(keyValue);
+                if (strOfData) {
+                    if (strOfData.charAt(0) === '=') {
+                        myCurrentTd.innerHTML = parseFormula(strOfData);
+                    } else
+                        myCurrentTd.innerHTML =
+                        localStorage.getItem(keyValue);
+                }
+                myTableRefresh();
+                myStringOfFunction.removeEventListener("click", eventInput);
+                table.removeEventListener("click", addEvent);
+            }
+        });
+
+        myStringOfFunction.appendChild(myInput).setAttribute("id", "inputFormula");
+
+        //delegate focus in new <input>
+        myStringOfFunction.childNodes[0].focus();
+        
+
+        function addEvent(e) {
+
+            var target = e.target;
+            var cellTd = target.getAttribute('id');
+            //var myTemp = myInput.value;
+            //console.log(target);
+            if (!cellTd) {
+                console.log(cellTd);
+                return cellRef;
+            } else {
+
+                cellRef = cellTd.slice(8).replace('$', "");
+                //console.log(cellRef);
+                myInput.value = myTemp + cellRef;
+                console.log(myInput.value);
+
+                table.removeEventListener("click", addEvent);
+                if (myStringOfFunction.childNodes[0]) {
+                	myStringOfFunction.childNodes[0].focus();
+                }
+                return cellRef;
+            };
+        }
+        var myTemp = myInput.value;
+        table.addEventListener("click", addEvent);
+
+    }
+    myStringOfFunction.addEventListener("click", eventInput);
 }
 
 function myTableRefresh() { //  reCalculation all cells in active sheet
@@ -389,8 +420,102 @@ function myTableRefresh() { //  reCalculation all cells in active sheet
     }
 }
 
+function clearData() {
+    var myAnswer = confirm("clear all data?");
+    if (!myAnswer) {
+        return
+    } else {
+        localStorage.clear();
+        var cell;
+        // Find a <table> element with class="visible":
+        var table = document.getElementsByClassName("visible")[0];
+        var numCol = table.rows[0].cells.length;
+        var numRow = table.rows.length;
+        for (var i = 1; i < numRow; i++) {
+            for (var j = 1; j < numCol; j++) {
+
+                cell = table.rows[i].cells[j];
+                cell.innerText = "";
+            }
+        }
+    }
+}
+
+function showTip() {
+    // from https://learn.javascript.ru/task/behavior-tooltip
+    var showingmytip;
+
+    document.onmouseover = function(e) {
+        var target = e.target;
+
+
+        var mytip = target.getAttribute('data-mytip');
+
+        if (!mytip) {
+            return;
+        } else {
+            //console.log(mytip);
+            var mytipElem = document.createElement('div');
+            mytipElem.className = 'mytip';
+            mytipElem.innerHTML = mytip;
+
+            document.getElementById('myAddRow').appendChild(mytipElem);
+            //document.body.appendChild(mytipElem);
+
+            var coords = target.getBoundingClientRect();
+            //console.log(coords);
+            var left = coords.left + (target.offsetWidth - mytipElem.offsetWidth) / 2;
+            if (left < 0) left = 0; // не вылезать за левую границу окна
+
+            var top = coords.top - mytipElem.offsetHeight - 5;
+            if (top < 0) { // не вылезать за верхнюю границу окна
+                top = coords.top + target.offsetHeight + 5;
+            }
+
+            mytipElem.style.left = left + 'px';
+            mytipElem.style.top = top + 'px';
+
+            showingmytip = mytipElem;
+        };
+    }
+
+    document.onmouseout = function(e) {
+
+        if (showingmytip) {
+            document.getElementById('myAddRow').removeChild(showingmytip);
+            //document.body.removeChild(showingmytip);
+            showingmytip = null;
+        }
+
+    };
+}
+
+function chooseCell() {
+    var table = document.getElementsByClassName("visible")[0];
+
+    function addEvent(e) {
+
+        var target = e.target;
+        var cellTd = target.getAttribute('id');
+        //console.log(target);
+        if (!cellTd) {
+            console.log(cellTd);
+            return cellRef;
+        } else {
+
+            cellRef = cellTd.slice(8).replace('$', "");
+            console.log(cellRef);
+
+            table.removeEventListener("click", addEvent);
+            return cellTd.slice(8).replace('$', "");
+        };
+    }
+    table.addEventListener("click", addEvent);
+}
+
 function onMyTableLoad() {
     localStorage.clear();
     createSheets(3);
+    showTip();
     //stringOfFunctionEvent();
 }

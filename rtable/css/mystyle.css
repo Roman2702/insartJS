@@ -1,3 +1,4 @@
+body {width: 1000px;}
 table {table-layout: fixed}
 table {border-collapse: collapse; width: 100%;}
 td, th {
@@ -47,7 +48,7 @@ table, td, th {
     *.hidden {display: none;}
 
     span{
-        background-color: #eee;float: left;margin-top: 5px;
+        background-color: #eee;float: left;margin-top: 5px;padding-left: 20px;
     }
     #stringOfFunction{
         border: 1px solid grey;width: 700px; height: 27px; text-align: left;
@@ -59,3 +60,18 @@ table, td, th {
         width: 690px;
     }
 
+#sheetSwitch{
+    width: 800px; padding-left: 20px;
+}
+
+    *.mytip {
+      position: fixed;
+      padding: 2px 2px;
+      border: 1px solid #b3c9ce;
+      /*border-radius: 4px;*/
+      text-align: center;
+      font: 10px arial, sans-serif;
+      color: #333;
+      background: #fff;
+      box-shadow: 3px 3px 3px rgba(0, 0, 0, .3);
+    }

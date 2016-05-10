@@ -11,6 +11,17 @@
 		<script type="text/javascript" src="src\myutil.js"></script>
 		<script type="text/javascript" src="src\myjs.js">
 		</script>
+		<div id="mainMenu" class="container">
+			<button data-mytip="clear all data <br>and localStorage" type="button" 
+			class="btn btn-link" onclick="clearData()">Clear</button>
+			<button data-mytip="save data <br>to file"
+			type="button" class="btn btn-link" onclick="alert('doesnt work')">Save</button>
+			<button data-mytip="load external data"
+			type="button" class="btn btn-link" onclick="alert('doesnt work')">Load</button>
+			<button data-mytip="need help?"
+			type="button" class="btn btn-link" onclick="alert('Do you need help?')">Help
+			</button>
+		</div>
 		<div id="sheetSwitch" class="btn-group">
 			<button type="button" class="btn btn-primary" onclick="addSheet()">add sheet</button>
 			<button type="button" class="btn btn-success" onclick="setVisible(1)">sheet1</button>
@@ -33,6 +44,9 @@
 		</div>
 		<div id="myAddRow">
 			<button onclick="addRow()">add row</button>
+		</div>
+		<div id="currentData">
+			
 		</div>	
 	</body>
 	</html>
